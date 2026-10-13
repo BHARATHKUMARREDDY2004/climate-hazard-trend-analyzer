@@ -28,7 +28,7 @@ export default function TrendChart({ analysis, metric, selectedYear, onMetric, o
     const fitted =
       trend.status === "ok" ? years.map((y) => trend.ols.intercept + trend.ols.slope * y) : [];
     const barColor = analysis.annual.map((row) =>
-      !row.complete ? COLORS.sand : row.year === selectedYear ? COLORS.burgundy : COLORS.burgundySoft,
+      !row.complete ? COLORS.neutral : row.year === selectedYear ? COLORS.heat : COLORS.heatSoft,
     );
     return {
       labels: years,
@@ -37,8 +37,8 @@ export default function TrendChart({ analysis, metric, selectedYear, onMetric, o
           type: "line",
           label: "5-year mean",
           data: analysis.rolling[metric],
-          borderColor: COLORS.navy,
-          backgroundColor: COLORS.navy,
+          borderColor: COLORS.accent,
+          backgroundColor: COLORS.accent,
           borderWidth: 2.5,
           pointRadius: 0,
           tension: 0.25,
@@ -48,8 +48,8 @@ export default function TrendChart({ analysis, metric, selectedYear, onMetric, o
           type: "line",
           label: "Linear trend",
           data: fitted,
-          borderColor: COLORS.ink,
-          backgroundColor: COLORS.ink,
+          borderColor: COLORS.muted,
+          backgroundColor: COLORS.muted,
           borderWidth: 1.5,
           borderDash: [6, 4],
           pointRadius: 0,
@@ -60,7 +60,8 @@ export default function TrendChart({ analysis, metric, selectedYear, onMetric, o
               label: "Yearly value",
               data: yearly,
               backgroundColor: barColor,
-              hoverBackgroundColor: COLORS.burgundy,
+              hoverBackgroundColor: COLORS.heat,
+              borderRadius: 3,
               categoryPercentage: 0.82,
               barPercentage: 0.9,
             }
@@ -68,9 +69,9 @@ export default function TrendChart({ analysis, metric, selectedYear, onMetric, o
               type: "line",
               label: "Yearly value",
               data: yearly,
-              borderColor: COLORS.burgundySoft,
+              borderColor: COLORS.heatSoft,
               backgroundColor: barColor,
-              pointBorderColor: COLORS.burgundy,
+              pointBorderColor: COLORS.heat,
               borderWidth: 1.5,
               pointRadius: 3.5,
               pointHoverRadius: 6,
@@ -95,7 +96,7 @@ export default function TrendChart({ analysis, metric, selectedYear, onMetric, o
         y: {
           beginAtZero: meta.bars,
           title: { display: true, text: meta.unit },
-          grid: { color: "#e9e2d0" },
+          grid: { color: COLORS.grid },
         },
       },
       plugins: {
@@ -146,7 +147,9 @@ export default function TrendChart({ analysis, metric, selectedYear, onMetric, o
         <dl className="trend-stats">
           <div>
             <dt>Verdict (5% level)</dt>
-            <dd className={`verdict ${trend.direction}`}>{VERDICT[trend.direction]}</dd>
+            <dd>
+              <span className={`badge ${trend.direction}`}>{VERDICT[trend.direction]}</span>
+            </dd>
           </div>
           <div>
             <dt>Mann-Kendall</dt>

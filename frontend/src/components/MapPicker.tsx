@@ -67,11 +67,11 @@ function ClickHandler({ mode, onPick }: Pick<Props, "mode" | "onPick">) {
   const preview = hover ? boxFrom(first, hover) : null;
   return (
     <>
-      <CircleMarker center={[first.lat, first.lon]} radius={4} pathOptions={{ color: COLORS.navy, fillOpacity: 1 }} />
+      <CircleMarker center={[first.lat, first.lon]} radius={4} pathOptions={{ color: COLORS.accent, fillOpacity: 1 }} />
       {preview && preview.type === "bbox" && (
         <Rectangle
           bounds={bounds(preview)!}
-          pathOptions={{ color: COLORS.navy, weight: 1.5, dashArray: "5 4", fillOpacity: 0.06 }}
+          pathOptions={{ color: COLORS.accent, weight: 1.5, dashArray: "5 4", fillOpacity: 0.06 }}
         />
       )}
     </>
@@ -106,14 +106,14 @@ export default function MapPicker({ mode, region, samplePoints, onPick }: Props)
         {region?.type === "bbox" && (
           <Rectangle
             bounds={bounds(region)!}
-            pathOptions={{ color: COLORS.burgundy, weight: 2, fillColor: COLORS.burgundy, fillOpacity: 0.08 }}
+            pathOptions={{ color: COLORS.heat, weight: 2, fillColor: COLORS.heat, fillOpacity: 0.08 }}
           />
         )}
         {region?.type === "point" && (
           <CircleMarker
             center={[region.lat, region.lon]}
             radius={8}
-            pathOptions={{ color: "#fffdf8", weight: 2, fillColor: COLORS.burgundy, fillOpacity: 1 }}
+            pathOptions={{ color: "#ffffff", weight: 2, fillColor: COLORS.heat, fillOpacity: 1 }}
           />
         )}
         {samplePoints.length > 1 &&
@@ -122,7 +122,7 @@ export default function MapPicker({ mode, region, samplePoints, onPick }: Props)
               key={`${cell.lat},${cell.lon}`}
               center={[cell.lat, cell.lon]}
               radius={5}
-              pathOptions={{ color: "#fffdf8", weight: 1.5, fillColor: COLORS.navy, fillOpacity: 1 }}
+              pathOptions={{ color: "#ffffff", weight: 1.5, fillColor: COLORS.accent, fillOpacity: 1 }}
             >
               <Tooltip>
                 Sample point {index + 1}: {cell.lat.toFixed(1)}°, {cell.lon.toFixed(1)}°

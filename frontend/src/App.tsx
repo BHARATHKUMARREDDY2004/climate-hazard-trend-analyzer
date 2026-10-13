@@ -191,9 +191,17 @@ export default function App() {
   return (
     <>
       <header className="masthead">
-        <div className="wrap">
-          <h1>Climate Hazard Trend Analyzer</h1>
-          <p>Heatwave frequency, duration and intensity from eight decades of daily temperature records</p>
+        <div className="wrap masthead-inner">
+          <div className="brand">
+            <span className="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 17l5-5 4 3 8-9" />
+                <path d="M15 6h5v5" />
+              </svg>
+            </span>
+            <h1>Climate Hazard Trend Analyzer</h1>
+          </div>
+          <p>Heatwave trends from daily temperature records since 1940</p>
         </div>
       </header>
 

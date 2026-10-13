@@ -51,9 +51,11 @@ function Tiles({ analysis }: { analysis: Analysis }) {
             <span className="tile-value">
               {signed(days.sen_slope * 10)} <small>/ decade</small>
             </span>
-            <span className={`tile-note verdict ${days.direction}`}>
-              {days.direction === "no_significant_trend" ? "not significant" : "significant"}, p ={" "}
-              {pValue(days.mann_kendall.p_value)}
+            <span className="tile-note">
+              <span className={`badge ${days.direction}`}>
+                {days.direction === "no_significant_trend" ? "Not significant" : "Significant"}
+              </span>{" "}
+              p = {pValue(days.mann_kendall.p_value)}
             </span>
           </>
         ) : (

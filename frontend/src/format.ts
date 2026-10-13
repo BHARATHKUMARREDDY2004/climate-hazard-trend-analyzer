@@ -12,15 +12,14 @@ export const METRICS: Record<MetricKey, { label: string; tab: string; unit: stri
 export const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export const COLORS = {
-  ink: "#2b2b2b",
-  muted: "#6b6558",
-  rule: "#d8d0bd",
-  navy: "#1f3a5f",
-  burgundy: "#7a1f2b",
-  burgundySoft: "#c9a3a0",
-  forest: "#2f5d50",
-  ochre: "#9a6b1f",
-  sand: "#b9ad93",
+  ink: "#1a1f36",
+  muted: "#697386",
+  rule: "#e3e8ee",
+  grid: "#eef1f5",
+  accent: "#635bff",
+  heat: "#e5533d",
+  heatSoft: "#f6b8a9",
+  neutral: "#b4bcc8",
 };
 
 export function num(value: number | null | undefined, decimals = 1): string {

@@ -7,7 +7,7 @@ const options: ChartOptions<"bar"> = {
   interaction: { mode: "index", intersect: false },
   scales: {
     x: { grid: { display: false } },
-    y: { beginAtZero: true, title: { display: true, text: "heatwave days per year" }, grid: { color: "#e9e2d0" } },
+    y: { beginAtZero: true, title: { display: true, text: "heatwave days per year" }, grid: { color: COLORS.grid } },
   },
   plugins: {
     tooltip: {
@@ -21,8 +21,8 @@ export default function SeasonChart({ analysis }: { analysis: Analysis }) {
   const data: ChartData<"bar"> = {
     labels: MONTHS,
     datasets: [
-      { label: `${early.from}–${early.to}`, data: early.days, backgroundColor: COLORS.navy },
-      { label: `${late.from}–${late.to}`, data: late.days, backgroundColor: COLORS.burgundy },
+      { label: `${early.from}–${early.to}`, data: early.days, backgroundColor: COLORS.neutral, borderRadius: 3 },
+      { label: `${late.from}–${late.to}`, data: late.days, backgroundColor: COLORS.heat, borderRadius: 3 },
     ],
   };
   return (

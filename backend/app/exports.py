@@ -16,11 +16,11 @@ from reportlab.platypus import Image, Paragraph, SimpleDocTemplate, Spacer, Tabl
 
 from .insights import METRICS
 
-NAVY = "#1f3a5f"
-BURGUNDY = "#7a1f2b"
-INK = "#2b2b2b"
-RULE = "#cfc7b4"
-PAPER = "#f4efe3"
+ACCENT = "#635bff"
+HEAT = "#e5533d"
+INK = "#1a1f36"
+RULE = "#e3e8ee"
+PAPER = "#f6f8fa"
 
 ANNUAL_COLUMNS = [
     ("year", "Year"),
@@ -112,24 +112,24 @@ def trend_plot_png(doc: dict, metric: str, width: float = 8.0, height: float = 3
     fig = Figure(figsize=(width, height), dpi=dpi, facecolor="white")
     FigureCanvasAgg(fig)
     ax = fig.add_subplot(111)
-    font = {"family": "serif"}
+    font = {"family": "sans-serif"}
 
     shown = [(y, v) for y, v in zip(years, values) if v is not None]
     if as_bars:
-        ax.bar([y for y, _ in shown], [v for _, v in shown], color=BURGUNDY, width=0.7, label="Yearly value")
+        ax.bar([y for y, _ in shown], [v for _, v in shown], color=HEAT, width=0.7, label="Yearly value")
     else:
-        ax.plot([y for y, _ in shown], [v for _, v in shown], color=BURGUNDY, marker="o",
+        ax.plot([y for y, _ in shown], [v for _, v in shown], color=HEAT, marker="o",
                 markersize=3, linewidth=1, label="Yearly value")
 
     smooth = [(y, v) for y, v in zip(years, doc["rolling"][metric]) if v is not None]
     if smooth:
-        ax.plot([y for y, _ in smooth], [v for _, v in smooth], color=NAVY, linewidth=1.8, label="5-year mean")
+        ax.plot([y for y, _ in smooth], [v for _, v in smooth], color=ACCENT, linewidth=1.8, label="5-year mean")
 
     trend = doc["trends"][metric]
     if trend["status"] == "ok":
         ends = [years[0], years[-1]]
         fit = [trend["ols"]["intercept"] + trend["ols"]["slope"] * y for y in ends]
-        ax.plot(ends, fit, color=INK, linewidth=1.2, linestyle="--", label="Linear trend")
+        ax.plot(ends, fit, color="#697386", linewidth=1.2, linestyle="--", label="Linear trend")
 
     ax.set_title(f"{meta['label']} — {doc['region']['label']}", fontdict={**font, "size": 11}, loc="left")
     ax.set_ylabel(meta["unit"], fontdict={**font, "size": 9})
@@ -140,9 +140,9 @@ def trend_plot_png(doc: dict, metric: str, width: float = 8.0, height: float = 3
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
     for label in ax.get_xticklabels() + ax.get_yticklabels():
-        label.set_fontfamily("serif")
+        label.set_fontfamily("sans-serif")
         label.set_fontsize(8)
-    fig.legend(frameon=False, prop={"family": "serif", "size": 8}, loc="lower center", ncols=3)
+    fig.legend(frameon=False, prop={"family": "sans-serif", "size": 8}, loc="lower center", ncols=3)
     fig.tight_layout(rect=(0, 0.07, 1, 1))
 
     buffer = io.BytesIO()
@@ -176,18 +176,18 @@ def _trend_row(doc: dict, metric: str) -> list[str]:
 
 
 def report_pdf(doc: dict) -> bytes:
-    base = dict(fontName="Times-Roman", textColor=colors.HexColor(INK), alignment=TA_LEFT)
-    title = ParagraphStyle("title", fontSize=20, leading=24, **{**base, "fontName": "Times-Bold", "textColor": colors.HexColor(NAVY)})
-    subtitle = ParagraphStyle("subtitle", fontSize=11, leading=14, spaceAfter=10, **{**base, "fontName": "Times-Italic"})
-    heading = ParagraphStyle("heading", fontSize=13, leading=16, spaceBefore=12, spaceAfter=6, keepWithNext=1, **{**base, "fontName": "Times-Bold", "textColor": colors.HexColor(NAVY)})
-    body = ParagraphStyle("body", fontSize=10.5, leading=14.5, spaceAfter=6, **base)
-    lead = ParagraphStyle("lead", fontSize=12, leading=16.5, spaceAfter=8, **base)
+    base = dict(fontName="Helvetica", textColor=colors.HexColor(INK), alignment=TA_LEFT)
+    title = ParagraphStyle("title", fontSize=18, leading=22, **{**base, "fontName": "Helvetica-Bold", "textColor": colors.HexColor(INK)})
+    subtitle = ParagraphStyle("subtitle", fontSize=11, leading=14, spaceAfter=10, **{**base, "fontName": "Helvetica"})
+    heading = ParagraphStyle("heading", fontSize=13, leading=16, spaceBefore=12, spaceAfter=6, keepWithNext=1, **{**base, "fontName": "Helvetica-Bold"})
+    body = ParagraphStyle("body", fontSize=9.5, leading=14, spaceAfter=6, **base)
+    lead = ParagraphStyle("lead", fontSize=11, leading=16, spaceAfter=8, **base)
     small = ParagraphStyle("small", fontSize=9, leading=12, spaceAfter=4, **base)
 
     def table(rows, widths, header=True, size=9):
         t = Table(rows, colWidths=widths, repeatRows=1 if header else 0)
         style = [
-            ("FONT", (0, 0), (-1, -1), "Times-Roman", size),
+            ("FONT", (0, 0), (-1, -1), "Helvetica", size),
             ("TEXTCOLOR", (0, 0), (-1, -1), colors.HexColor(INK)),
             ("LINEBELOW", (0, 0), (-1, -1), 0.4, colors.HexColor(RULE)),
             ("VALIGN", (0, 0), (-1, -1), "TOP"),
@@ -196,12 +196,12 @@ def report_pdf(doc: dict) -> bytes:
         ]
         if header:
             style += [
-                ("FONT", (0, 0), (-1, 0), "Times-Bold", size),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", size),
                 ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor(PAPER)),
-                ("LINEBELOW", (0, 0), (-1, 0), 0.8, colors.HexColor(NAVY)),
+                ("LINEBELOW", (0, 0), (-1, 0), 0.8, colors.HexColor("#c1c9d2")),
             ]
         else:
-            style.append(("FONT", (0, 0), (0, -1), "Times-Bold", size))
+            style.append(("FONT", (0, 0), (0, -1), "Helvetica-Bold", size))
         t.setStyle(TableStyle(style))
         return t
 
@@ -257,8 +257,8 @@ def report_pdf(doc: dict) -> bytes:
 
     def footer(canvas, _doc):
         canvas.saveState()
-        canvas.setFont("Times-Italic", 8)
-        canvas.setFillColor(colors.HexColor("#6b6558"))
+        canvas.setFont("Helvetica", 8)
+        canvas.setFillColor(colors.HexColor("#697386"))
         canvas.drawString(20 * mm, 12 * mm, f"Climate Hazard Trend Analyzer · generated {generated} · analysis {doc['id']}")
         canvas.drawRightString(190 * mm, 12 * mm, f"Page {canvas.getPageNumber()}")
         canvas.restoreState()
