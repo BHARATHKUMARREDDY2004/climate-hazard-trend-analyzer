@@ -37,6 +37,13 @@ is in use.
 **Single process.** After `npm run build`, the backend serves the built frontend
 itself, so the whole app is available on http://localhost:8000.
 
+**Deploying to Vercel.** The repository deploys as one Vercel project: the
+frontend is built as static files and `api/index.py` exposes the FastAPI app as a
+Python serverless function (see `vercel.json`). Set `MONGODB_URI` in the project's
+environment variables, for example through Vercel's MongoDB Atlas integration.
+On Vercel the backend requires MongoDB, because a serverless function's file
+system is temporary. In-memory rate limits are kept per function instance there.
+
 **Tests.**
 
 ```bash
